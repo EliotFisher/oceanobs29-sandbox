@@ -66,7 +66,7 @@ export const IMAGES: Record<'homeHero' | 'deepSeaVehicle', SiteImage> = {
  * The silent, fast-start video is served from public/video/. A research-vessel still backs playback.
  */
 export const HERO_VIDEO = {
-  src: '/video/oceanobs29-hero.mp4',
+  src: '/video/oceanobs29-hero-trimmed.mp4',
   type: 'video/mp4',
   poster: heroVideoPoster,
   credit: 'OceanObs’29',
