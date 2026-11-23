@@ -15,7 +15,10 @@ export interface Props {
 const { title, id, intro, link, dark = false, class: className = '' } = Astro.props;
 ---
 
-<div class:list={['flex flex-col gap-4 md:flex-row md:items-end md:justify-between', className]}>
+<div
+  class:list={['intersect intersect-once flex flex-col gap-4 md:flex-row md:items-end md:justify-between', className]}
+  data-motion-reveal
+>
   <div class="max-w-3xl">
     <h2
       id={id}

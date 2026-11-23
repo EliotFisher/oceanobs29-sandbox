@@ -62,8 +62,8 @@ export const IMAGES: Record<'homeHero' | 'deepSeaVehicle', SiteImage> = {
 
 /**
  * Homepage hero video: an original OceanObs’29 production (no third-party rights), added 2026-11-20.
- * Source: "OceanObs29 Hero_optimized.mp4" (1920×1080 H.264, 35 s, no audio, 8.8 MB, fast-start).
- * The file lives in public/video/ and plays on request. The poster shows the research vessel at 21.2 seconds.
+ * Source: "OceanObs29 Hero_optimized.mp4", trimmed to remove the opening black and the closing end card.
+ * The silent, fast-start video is served from public/video/. A research-vessel still backs playback.
  */
 export const HERO_VIDEO = {
   src: '/video/oceanobs29-hero.mp4',

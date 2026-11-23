@@ -33,7 +33,8 @@ const titleHref = compact ? `${getPermalink('/events')}#${eventAnchor(event)}` :
 
 <article
   id={compact ? undefined : eventAnchor(event)}
-  class="grid scroll-mt-28 gap-x-8 gap-y-1 border-t border-line py-6 md:grid-cols-[11rem_1fr_auto]"
+  class="intersect intersect-once grid scroll-mt-28 gap-x-8 gap-y-1 border-t border-line py-6 md:grid-cols-[11rem_1fr_auto]"
+  data-motion-reveal
   data-ends={upcoming ? endsAt(data).toISOString() : undefined}
 >
   <p class="font-heading text-base font-extrabold text-heading md:pt-0.5">
