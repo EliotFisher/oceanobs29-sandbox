@@ -14,7 +14,7 @@ export interface Props {
 const { title, intro, image } = Astro.props;
 ---
 
-<section class="relative isolate overflow-hidden bg-ink" aria-labelledby="page-heading">
+<section class="site-dark-band relative isolate overflow-hidden" aria-labelledby="page-heading">
   {
     image && (
       <>
@@ -28,15 +28,15 @@ const { title, intro, image } = Astro.props;
           style={image.position ? `object-position: ${image.position}` : undefined}
           class="absolute inset-0 -z-10 h-full w-full object-cover"
         />
-        <div class="absolute inset-0 -z-10 bg-linear-to-r from-ink via-ink/85 to-ink/30" aria-hidden="true" />
+        <div class="absolute inset-0 -z-10 bg-ink/80" aria-hidden="true" />
         <PhotoCredit image={image} />
       </>
     )
   }
-  <div class="mx-auto max-w-7xl px-4 pt-20 pb-16 md:pt-28 md:pb-20 lg:px-6">
+  <div class="mx-auto max-w-7xl px-4 pt-16 pb-16 md:pt-24 md:pb-24 lg:px-6">
     <h1
       id="page-heading"
-      class="max-w-4xl text-4xl leading-[1.05] font-extrabold tracking-tight text-white md:text-6xl"
+      class="max-w-5xl text-[clamp(2.5rem,6.5vw,6rem)] leading-[0.98] font-bold tracking-[-0.06em] text-white [overflow-wrap:anywhere]"
     >
       {title}
     </h1>

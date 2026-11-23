@@ -13,7 +13,7 @@ const show = ORG.host.name || ORG.utilityLinks.length || ORG.newsletterUrl;
     <div class="bg-ink text-on-dark-muted">
       <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-3 py-2 text-xs lg:px-6">
         {ORG.host.name && (
-          <p class="eyebrow hidden text-[0.6875rem] md:block">
+          <p class="eyebrow hidden text-xs md:block">
             Hosted by{' '}
             <a class="text-on-dark hover:underline" href={ORG.host.url}>
               {ORG.host.name}

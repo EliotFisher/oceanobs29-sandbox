@@ -1,5 +1,5 @@
 ---
-// Homepage (2026-11-22): hero → About OceanObs (three short sections) → Upcoming Events → footer contact. Words live in src/config/home.ts; the hero video in src/config/images.ts.
+// Homepage copy and media are read from the shared configuration.
 import { Icon } from 'astro-icon/components';
 
 import Layout from '~/layouts/PageLayout.astro';
@@ -10,7 +10,9 @@ import UpcomingEvents from '~/components/site/UpcomingEvents.astro';
 import { SITE, I18N } from 'astrowind:config';
 import { ORG } from '~/config/org';
 import { HOME } from '~/config/home';
-import { HERO_VIDEO } from '~/config/images';
+import Image from '~/components/common/Image.astro';
+import PhotoCredit from '~/components/site/PhotoCredit.astro';
+import { HERO_VIDEO, IMAGES } from '~/config/images';
 import { getImage } from 'astro:assets';
 import { getPermalink } from '~/utils/permalinks';
 import { getEvents, splitByTime } from '~/utils/events';
@@ -37,180 +39,102 @@ const structuredData = [
 <Layout metadata={metadata}>
   <StructuredData slot="head" schema={structuredData} />
 
-  <!--
-    1. Hero, after OceanX: the background video is pinned (`sticky`) while the headline scrolls up over it,
-    then a short clear stretch of video shows before the page carries on. The video plays once and stops on
-    its end card (the OceanObs’29 logo); the headline then fades so the logo shows on its own, and comes back
-    as soon as the visitor scrolls, presses a key, tabs in, or presses Replay. Visitors who ask for reduced
-    motion or data saving get the still poster frame, no pinning and no fading.
-  -->
-  <section class="relative isolate bg-ink motion-reduce:overflow-hidden" aria-labelledby="hero-heading" data-hero>
-    <!-- Decorative video layer, hidden from assistive technology. The script below starts the video. -->
-    <div class="sticky top-0 h-svh overflow-hidden motion-reduce:static" aria-hidden="true">
-      <video
-        class="h-full w-full object-cover"
-        poster={heroPoster.src}
-        muted
-        playsinline
-        preload="none"
-        tabindex="-1"
-        data-hero-video
-      >
-        <source src={HERO_VIDEO.src} type={HERO_VIDEO.type} />
-      </video>
-    </div>
-
-    <!-- overflow-clip keeps the shade inside the hero (it would otherwise show under the header on phones). -->
-    <div class="relative -mt-[100svh] overflow-clip">
-      <!-- First screen: clear video above, headline at the bottom. -->
-      <div class="flex min-h-[calc(100svh-var(--hero-header,4.5rem))] flex-col justify-end">
-        <div
-          class="hero-fade relative pt-10 transition-opacity duration-1000 motion-reduce:transition-none"
-          data-hero-fade
-        >
-          <!--
-            Shade behind the text only (it moves with the text, so contrast holds while scrolling); it fades in
-            over 10rem above the text and out below it. Below 1280px an even 75% shade; wide screens: a left-to-right gradient.
-            Contrast-checked over 9 video frames at 375/768/1024/1280/1440 (2026-11-21, docs/QA_REPORT.md).
-          -->
-          <div
-            class="hero-shade absolute inset-x-0 -top-40 -bottom-24 bg-ink/75 xl:bg-transparent xl:bg-linear-to-r xl:from-ink/90 xl:via-ink/75 xl:via-60% xl:to-ink/15"
-            aria-hidden="true"
-          >
-          </div>
-          <div class="relative mx-auto max-w-7xl px-4 pb-16 md:pb-20 lg:px-6">
-            <h1
-              id="hero-heading"
-              class="max-w-5xl text-4xl leading-[1.02] tracking-tight text-white uppercase sm:text-5xl md:text-6xl lg:text-7xl"
-            >
-              <span class="block font-light text-on-dark">{HOME.hero.headlineLead}</span>
-              <span class="block font-extrabold">{HOME.hero.headlineEmphasis}</span>
-            </h1>
-            <p class="mt-8 max-w-2xl text-lg text-on-dark md:text-xl">{HOME.hero.intro}</p>
-            <div class="mt-10 flex flex-wrap gap-3">
-              <a href={getPermalink(HOME.hero.primary.href)} class="btn-site-accent">
-                {HOME.hero.primary.text}
-                <Icon name="tabler:arrow-right" class="h-4 w-4" aria-hidden="true" />
-              </a>
-              <a href={getPermalink(HOME.hero.secondary.href)} class="btn-site-outline-light"
-                >{HOME.hero.secondary.text}</a
-              >
-            </div>
-          </div>
-        </div>
+  <section class="home-hero" style={`--hero-poster: url("${heroPoster.src}")`} aria-labelledby="hero-heading">
+    <video
+      class="home-hero__video"
+      poster={heroPoster.src}
+      muted
+      playsinline
+      preload="none"
+      tabindex="-1"
+      aria-hidden="true"
+      data-hero-video
+    >
+      <source src={HERO_VIDEO.src} type={HERO_VIDEO.type} />
+    </video>
+    <div class="home-hero__copy mx-auto w-full max-w-7xl px-4 lg:px-6">
+      <h1 id="hero-heading">
+        <span>{HOME.hero.headlineLead}</span>
+        <span>{HOME.hero.headlineEmphasis}</span>
+      </h1>
+      <p class="mt-6 max-w-xl text-lg text-on-dark md:text-xl">{HOME.hero.intro}</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href={getPermalink(HOME.hero.primary.href)} class="btn-site-accent">
+          {HOME.hero.primary.text}
+          <Icon name="tabler:arrow-up-right" class="size-4" aria-hidden="true" />
+        </a>
+        <a href={getPermalink(HOME.hero.secondary.href)} class="btn-site-outline-light">{HOME.hero.secondary.text}</a>
       </div>
-      <!-- Short clear stretch: the pinned video shows without text, then the About OceanObs sections follow. -->
-      <div class="h-[20svh] motion-reduce:hidden" aria-hidden="true"></div>
     </div>
-
-    <!-- Pause / Play / Replay, pinned to the bottom-right corner while the hero is on screen (WCAG 2.2.2). -->
-    <div class="pointer-events-none sticky bottom-0 z-10 -mt-17 flex h-17 items-end justify-end p-3">
-      <button
-        type="button"
-        class="pointer-events-auto inline-flex min-h-11 items-center gap-2 rounded-[4px] bg-ink/75 px-3 text-sm font-semibold text-white hover:bg-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        data-hero-video-toggle
-        hidden
-      >
-        <Icon name="tabler:player-pause-filled" class="h-4 w-4" aria-hidden="true" data-icon="pause" />
-        <Icon name="tabler:player-play-filled" class="hidden h-4 w-4" aria-hidden="true" data-icon="play" />
-        <Icon name="tabler:refresh" class="hidden h-4 w-4" aria-hidden="true" data-icon="replay" />
-        <span data-label>Pause video</span>
-      </button>
-    </div>
+    <button type="button" class="home-hero__control" data-hero-video-toggle hidden>Pause video</button>
   </section>
 
-  <style>
-    /* Shade fades in above the text and out below it, instead of hard edges. */
-    .hero-shade {
-      mask-image: linear-gradient(to bottom, transparent, #000 10rem, #000 calc(100% - 8rem), transparent);
-    }
-    /* Video finished on the logo: hide the headline and its shade until the visitor interacts. */
-    [data-hero][data-ended] .hero-fade {
-      opacity: 0;
-      pointer-events: none;
-    }
-    /* Keyboard users tabbing in always see what they are focused on. */
-    [data-hero][data-ended] .hero-fade:focus-within {
-      opacity: 1;
-      pointer-events: auto;
-    }
-  </style>
-
   <script>
-    // Hero video: start it only when appropriate, wire up Pause/Play/Replay, and when it ends on the
-    // logo, fade the headline until the visitor scrolls, presses a key, taps the hero or tabs in.
-    // Runs on first load and after client-side navigations back to the homepage.
-    const setupHeroVideo = () => {
-      const hero = document.querySelector<HTMLElement>('[data-hero]');
+    function setupHeroVideo() {
       const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
       const button = document.querySelector<HTMLButtonElement>('[data-hero-video-toggle]');
-      if (!hero || !video || !button || video.dataset.ready) return;
+      if (!video || !button || video.dataset.ready) return;
       video.dataset.ready = 'true';
 
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
-      if (reduceMotion || saveData) return; // poster frame only
+      if (reduceMotion || saveData) return;
 
       const update = () => {
-        const state = video.ended ? 'replay' : video.paused ? 'play' : 'pause';
-        const labels = { pause: 'Pause video', play: 'Play video', replay: 'Replay video' };
-        button.querySelector('[data-label]')!.textContent = labels[state];
-        button.querySelectorAll<SVGElement>('[data-icon]').forEach((icon) => {
-          icon.classList.toggle('hidden', icon.dataset.icon !== state);
-        });
+        video.toggleAttribute('data-ended', video.ended);
+        button.textContent = video.ended ? 'Replay video' : video.paused ? 'Play video' : 'Pause video';
       };
 
-      const showText = () => {
-        delete hero.dataset.ended;
-        removeEventListener('scroll', showText);
-        removeEventListener('keydown', showText);
-        hero.removeEventListener('pointerdown', showText);
+      const play = () => {
+        video
+          .play()
+          .then(() => {
+            button.hidden = false;
+          })
+          .catch(() => {
+            // Keep the poster visible when playback is unavailable.
+          });
       };
-      video.addEventListener('ended', () => {
-        update();
-        hero.dataset.ended = 'true';
-        addEventListener('scroll', showText, { passive: true });
-        addEventListener('keydown', showText);
-        hero.addEventListener('pointerdown', showText);
-      });
-      hero.addEventListener('focusin', showText);
 
       video.addEventListener('play', update);
       video.addEventListener('pause', update);
+      video.addEventListener('ended', update);
       button.addEventListener('click', () => {
-        if (video.ended) {
-          showText();
-          video.currentTime = 0;
-        }
-        if (video.paused) video.play();
+        if (video.paused) play();
         else video.pause();
       });
 
-      video.preload = 'auto';
-      video
-        .play()
-        .then(() => {
-          button.hidden = false;
-          update();
-        })
-        .catch(() => {
-          /* Autoplay refused (e.g. low-power mode): keep the poster frame, no button. */
-        });
-    };
+      document.addEventListener('astro:before-swap', () => video.pause(), { once: true });
+      play();
+    }
+
     document.addEventListener('astro:page-load', setupHeroVideo);
   </script>
 
   <!-- 2. About OceanObs, in three short sections. Words in src/config/home.ts. -->
   <section class="py-16 md:py-24" aria-labelledby="about-oceanobs">
     <div class="mx-auto max-w-7xl px-4 lg:px-6">
-      <div class="grid gap-8 lg:grid-cols-12">
-        <h2 id="about-oceanobs" class="scroll-mt-28 tracking-tight text-heading lg:col-span-5">
-          <span class="block text-xl font-semibold text-link md:text-2xl"
-            >{HOME.about.titleLead}<span class="sr-only">:</span></span
-          >
-          <span class="mt-2 block text-3xl font-bold md:text-4xl">{HOME.about.titleEmphasis}</span>
-        </h2>
-        <p class="text-lg leading-relaxed text-default md:text-xl lg:col-span-7">{HOME.about.text}</p>
+      <div class="grid items-stretch gap-8 lg:grid-cols-12 lg:gap-14">
+        <div class="py-2 lg:col-span-7 lg:py-8">
+          <h2 id="about-oceanobs" class="scroll-mt-28 text-heading">
+            <span class="eyebrow block text-link">{HOME.about.titleLead}</span>
+            <span class="mt-4 block max-w-[19ch] text-4xl leading-[1.04] font-bold tracking-[-0.045em] md:text-5xl">
+              {HOME.about.titleEmphasis}
+            </span>
+          </h2>
+          <p class="mt-6 max-w-2xl text-lg leading-relaxed text-default">{HOME.about.text}</p>
+        </div>
+        <figure class="relative isolate min-h-[17rem] overflow-hidden rounded-lg bg-ink lg:col-span-5">
+          <Image
+            src={IMAGES.homeHero.src}
+            alt="Sunlit ocean and clouds over the Philippine Sea, seen from orbit"
+            layout="none"
+            widths={[480, 768, 1100]}
+            sizes="(min-width: 64rem) 42vw, 100vw"
+            class="absolute inset-0 h-full w-full object-cover"
+          />
+          <PhotoCredit image={IMAGES.homeHero} />
+        </figure>
       </div>
       <!-- Before / at / after: a connected three-step line (vertical on phones, horizontal from md). -->
       <div class="relative mt-12 md:mt-16">
@@ -260,7 +184,7 @@ const structuredData = [
       <ul class="mt-10 grid gap-4 md:grid-cols-3">
         {
           HOME.whyObserving.reasons.map(({ icon, title, text }) => (
-            <li class="rounded-[4px] border-t-4 border-primary bg-white p-6 md:p-8">
+            <li class="rounded-lg border border-line bg-white p-6 md:p-8">
               <Icon name={icon} class="h-9 w-9 text-primary" aria-hidden="true" />
               <h3 class="mt-5 text-xl font-bold text-heading">{title}</h3>
               <p class="mt-3 text-default">{text}</p>
@@ -280,7 +204,7 @@ const structuredData = [
     </div>
   </section>
 
-  <section class="bg-ink py-16 md:py-24" aria-labelledby="shape-next-decade">
+  <section class="site-dark-band py-16 md:py-24" aria-labelledby="shape-next-decade">
     <div class="mx-auto grid max-w-7xl gap-8 px-4 lg:grid-cols-12 lg:px-6">
       <h2
         id="shape-next-decade"
@@ -317,3 +241,90 @@ const structuredData = [
     </div>
   </section>
 </Layout>
+
+<style>
+  .home-hero {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: flex-end;
+    min-height: clamp(38rem, 86svh, 59rem);
+    color: white;
+    background: var(--aw-color-ink) var(--hero-poster) 55% center / cover no-repeat;
+  }
+
+  .home-hero__video,
+  .home-hero::before {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .home-hero__video {
+    z-index: -2;
+    object-fit: cover;
+    object-position: 55% center;
+  }
+
+  .home-hero__video[data-ended] {
+    visibility: hidden;
+  }
+
+  .home-hero::before {
+    z-index: -1;
+    content: '';
+    background: linear-gradient(180deg, rgb(4 15 29 / 35%), rgb(4 15 29 / 75%) 17%, rgb(4 15 29 / 94%));
+  }
+
+  .home-hero__copy {
+    padding-block: clamp(5rem, 12svh, 8rem) 5.5rem;
+  }
+
+  .home-hero h1 {
+    max-width: 15ch;
+    font-size: clamp(2.65rem, 6.55vw, 6.75rem);
+    font-weight: 750;
+    line-height: 0.98;
+    letter-spacing: -0.065em;
+    text-wrap: balance;
+  }
+
+  .home-hero h1 span {
+    display: block;
+  }
+
+  .home-hero h1 span + span {
+    color: var(--aw-color-accent);
+  }
+
+  .home-hero__control {
+    position: absolute;
+    right: 1rem;
+    bottom: 0.85rem;
+    min-height: 44px;
+    padding-inline: 1rem;
+    border: 1px solid rgb(255 255 255 / 65%);
+    border-radius: 999px;
+    background: var(--aw-color-ink) var(--hero-poster) 55% center / cover no-repeat;
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+
+  .home-hero__control:hover,
+  .home-hero__control:focus-visible {
+    border-color: var(--aw-color-accent);
+  }
+
+  @media (width >= 64rem) {
+    .home-hero::before {
+      background:
+        linear-gradient(180deg, rgb(4 15 29 / 20%), transparent 25%, rgb(4 15 29 / 78%)),
+        linear-gradient(90deg, rgb(4 15 29 / 90%), rgb(4 15 29 / 75%) 63%, transparent);
+    }
+
+    .home-hero__control {
+      right: max(1.5rem, calc((100% - var(--container-7xl)) / 2 + 1.5rem));
+    }
+  }
+</style>

@@ -4,8 +4,8 @@
 // must meet WCAG AA: check new colors with the skill's scripts/contrast.py.
 // The site is light-only (`ui.theme: light:only`), so `.dark` mirrors `:root`.
 //
-// OceanObs'29 palette, taken from the logo (navy #033A7A, teal #1CBAC9).
-// Checked with contrast.py on 2026-10-18: every pair below passes AA.
+// OceanObs'29 palette uses deep navy, sea glass, and warm white.
+// Sea-glass accents are reserved for navy backgrounds.
 ---
 
 <style is:inline>
@@ -16,37 +16,37 @@
     --aw-font-heading: var(--font-display);
 
     /* Button fills (white text on it must reach 4.5:1). */
-    --aw-color-primary: #033a7a; /* logo navy */
+    --aw-color-primary: #104c54;
     /* Hover state for primary buttons. */
-    --aw-color-secondary: #022a5a;
+    --aw-color-secondary: #083a42;
     /* Bright accent: only on `ink` backgrounds (as text, or as a fill under ink text). */
-    --aw-color-accent: #1cbac9; /* logo teal: fails on white, dark bands only */
-    --aw-color-accent-hover: #5fd3de;
+    --aw-color-accent: #8ce6d7;
+    --aw-color-accent-hover: #b4f1e6;
     /* Small text links and badge labels on white and `mist`. */
-    --aw-color-link: #00727f;
+    --aw-color-link: #0b6469;
 
     /* Dark bands (hero, page headers, footer) and cards on them. */
-    --aw-color-ink: #04162b;
-    --aw-color-ink-raised: #0b2643;
+    --aw-color-ink: #071827;
+    --aw-color-ink-raised: #102c3d;
     /* Alternate light sections, borders. */
-    --aw-color-mist: #f2f6f8;
-    --aw-color-line: #d7e1e7;
+    --aw-color-mist: #edf4f3;
+    --aw-color-line: #cbdcdb;
 
     /* Text on dark bands */
-    --aw-color-on-dark: #e6eef3;
-    --aw-color-on-dark-muted: #a9bdcc;
-    --aw-color-on-dark-link: #1cbac9;
+    --aw-color-on-dark: #edf6f5;
+    --aw-color-on-dark-muted: #bbcdcf;
+    --aw-color-on-dark-link: #8ce6d7;
 
-    --aw-color-text-heading: #04162b;
-    --aw-color-text-default: #13222f;
-    --aw-color-text-muted: #4a5d6c;
-    --aw-color-bg-page: #ffffff;
+    --aw-color-text-heading: #071827;
+    --aw-color-text-default: #1b323d;
+    --aw-color-text-muted: #415c64;
+    --aw-color-bg-page: #fbfcfa;
 
-    --aw-color-bg-page-dark: #04162b;
+    --aw-color-bg-page-dark: #071827;
 
     ::selection {
-      background-color: #1cbac9;
-      color: #04162b;
+      background-color: #8ce6d7;
+      color: #071827;
     }
   }
 </style>

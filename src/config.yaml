@@ -13,12 +13,13 @@ metadata:
     template: '%s — OceanObs’29'
   description: 'OceanObs’29 is a decadal forum bringing together the global ocean community to define priorities, strengthen coordination, and ensure ocean observing remains scientifically robust, societally relevant, and fit for the future.'
   robots:
-    index: true
+    # This branch powers the sandbox review site.
+    index: false
     follow: true
   openGraph:
     site_name: OceanObs’29
     images:
-      # Share card made from the hero photo and logo (2026-10-19).
+      # Share card uses the public-domain NASA photo and OceanObs’29 wordmark.
       - url: '~/assets/images/share-oceanobs29.jpg'
         width: 1200
         height: 630

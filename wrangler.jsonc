@@ -5,7 +5,7 @@
 // Builds fails. Docs: https://developers.cloudflare.com/workers/static-assets/
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "oceanobs29-website",
+  "name": "oceanobs29-sandbox",
   "compatibility_date": "2026-09-01",
   "main": "./worker/index.js",
   "assets": {
