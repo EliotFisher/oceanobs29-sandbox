@@ -1,0 +1,8 @@
+---
+// OceanObs’29 wordmark (PNG from the old site until an SVG is available).
+import Image from '~/components/common/Image.astro';
+import logo from '~/assets/images/site/logo-oceanobs29-color.png';
+import { ORG } from '~/config/org';
+---
+
+<Image src={logo} alt={ORG.name} layout="none" width={180} class="h-9 w-auto self-center md:h-10" loading="eager" />

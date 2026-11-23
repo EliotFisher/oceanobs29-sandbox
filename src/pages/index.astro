@@ -1,0 +1,319 @@
+---
+// Homepage (2026-11-22): hero → About OceanObs (three short sections) → Upcoming Events → footer contact. Words live in src/config/home.ts; the hero video in src/config/images.ts.
+import { Icon } from 'astro-icon/components';
+
+import Layout from '~/layouts/PageLayout.astro';
+import StructuredData from '~/components/common/StructuredData.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
+import UpcomingEvents from '~/components/site/UpcomingEvents.astro';
+
+import { SITE, I18N } from 'astrowind:config';
+import { ORG } from '~/config/org';
+import { HOME } from '~/config/home';
+import { HERO_VIDEO } from '~/config/images';
+import { getImage } from 'astro:assets';
+import { getPermalink } from '~/utils/permalinks';
+import { getEvents, splitByTime } from '~/utils/events';
+
+const metadata = { title: `${ORG.name}: Shaping the next decade of global ocean observing`, ignoreTitleTemplate: true };
+
+const { upcoming } = splitByTime(await getEvents());
+const linkClass = 'inline-flex items-center gap-1.5 font-semibold text-link underline-offset-4 hover:underline';
+const heroPoster = await getImage({ src: HERO_VIDEO.poster, width: 1920, format: 'webp' });
+
+// Structured data built only from config.yaml and src/config/org.ts: keep it true.
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${SITE?.site}/#website`,
+    name: ORG.name,
+    url: SITE?.site,
+    inLanguage: I18N?.language,
+  },
+];
+---
+
+<Layout metadata={metadata}>
+  <StructuredData slot="head" schema={structuredData} />
+
+  <!--
+    1. Hero, after OceanX: the background video is pinned (`sticky`) while the headline scrolls up over it,
+    then a short clear stretch of video shows before the page carries on. The video plays once and stops on
+    its end card (the OceanObs’29 logo); the headline then fades so the logo shows on its own, and comes back
+    as soon as the visitor scrolls, presses a key, tabs in, or presses Replay. Visitors who ask for reduced
+    motion or data saving get the still poster frame, no pinning and no fading.
+  -->
+  <section class="relative isolate bg-ink motion-reduce:overflow-hidden" aria-labelledby="hero-heading" data-hero>
+    <!-- Decorative video layer, hidden from assistive technology. The script below starts the video. -->
+    <div class="sticky top-0 h-svh overflow-hidden motion-reduce:static" aria-hidden="true">
+      <video
+        class="h-full w-full object-cover"
+        poster={heroPoster.src}
+        muted
+        playsinline
+        preload="none"
+        tabindex="-1"
+        data-hero-video
+      >
+        <source src={HERO_VIDEO.src} type={HERO_VIDEO.type} />
+      </video>
+    </div>
+
+    <!-- overflow-clip keeps the shade inside the hero (it would otherwise show under the header on phones). -->
+    <div class="relative -mt-[100svh] overflow-clip">
+      <!-- First screen: clear video above, headline at the bottom. -->
+      <div class="flex min-h-[calc(100svh-var(--hero-header,4.5rem))] flex-col justify-end">
+        <div
+          class="hero-fade relative pt-10 transition-opacity duration-1000 motion-reduce:transition-none"
+          data-hero-fade
+        >
+          <!--
+            Shade behind the text only (it moves with the text, so contrast holds while scrolling); it fades in
+            over 10rem above the text and out below it. Below 1280px an even 75% shade; wide screens: a left-to-right gradient.
+            Contrast-checked over 9 video frames at 375/768/1024/1280/1440 (2026-11-21, docs/QA_REPORT.md).
+          -->
+          <div
+            class="hero-shade absolute inset-x-0 -top-40 -bottom-24 bg-ink/75 xl:bg-transparent xl:bg-linear-to-r xl:from-ink/90 xl:via-ink/75 xl:via-60% xl:to-ink/15"
+            aria-hidden="true"
+          >
+          </div>
+          <div class="relative mx-auto max-w-7xl px-4 pb-16 md:pb-20 lg:px-6">
+            <h1
+              id="hero-heading"
+              class="max-w-5xl text-4xl leading-[1.02] tracking-tight text-white uppercase sm:text-5xl md:text-6xl lg:text-7xl"
+            >
+              <span class="block font-light text-on-dark">{HOME.hero.headlineLead}</span>
+              <span class="block font-extrabold">{HOME.hero.headlineEmphasis}</span>
+            </h1>
+            <p class="mt-8 max-w-2xl text-lg text-on-dark md:text-xl">{HOME.hero.intro}</p>
+            <div class="mt-10 flex flex-wrap gap-3">
+              <a href={getPermalink(HOME.hero.primary.href)} class="btn-site-accent">
+                {HOME.hero.primary.text}
+                <Icon name="tabler:arrow-right" class="h-4 w-4" aria-hidden="true" />
+              </a>
+              <a href={getPermalink(HOME.hero.secondary.href)} class="btn-site-outline-light"
+                >{HOME.hero.secondary.text}</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Short clear stretch: the pinned video shows without text, then the About OceanObs sections follow. -->
+      <div class="h-[20svh] motion-reduce:hidden" aria-hidden="true"></div>
+    </div>
+
+    <!-- Pause / Play / Replay, pinned to the bottom-right corner while the hero is on screen (WCAG 2.2.2). -->
+    <div class="pointer-events-none sticky bottom-0 z-10 -mt-17 flex h-17 items-end justify-end p-3">
+      <button
+        type="button"
+        class="pointer-events-auto inline-flex min-h-11 items-center gap-2 rounded-[4px] bg-ink/75 px-3 text-sm font-semibold text-white hover:bg-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        data-hero-video-toggle
+        hidden
+      >
+        <Icon name="tabler:player-pause-filled" class="h-4 w-4" aria-hidden="true" data-icon="pause" />
+        <Icon name="tabler:player-play-filled" class="hidden h-4 w-4" aria-hidden="true" data-icon="play" />
+        <Icon name="tabler:refresh" class="hidden h-4 w-4" aria-hidden="true" data-icon="replay" />
+        <span data-label>Pause video</span>
+      </button>
+    </div>
+  </section>
+
+  <style>
+    /* Shade fades in above the text and out below it, instead of hard edges. */
+    .hero-shade {
+      mask-image: linear-gradient(to bottom, transparent, #000 10rem, #000 calc(100% - 8rem), transparent);
+    }
+    /* Video finished on the logo: hide the headline and its shade until the visitor interacts. */
+    [data-hero][data-ended] .hero-fade {
+      opacity: 0;
+      pointer-events: none;
+    }
+    /* Keyboard users tabbing in always see what they are focused on. */
+    [data-hero][data-ended] .hero-fade:focus-within {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  </style>
+
+  <script>
+    // Hero video: start it only when appropriate, wire up Pause/Play/Replay, and when it ends on the
+    // logo, fade the headline until the visitor scrolls, presses a key, taps the hero or tabs in.
+    // Runs on first load and after client-side navigations back to the homepage.
+    const setupHeroVideo = () => {
+      const hero = document.querySelector<HTMLElement>('[data-hero]');
+      const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+      const button = document.querySelector<HTMLButtonElement>('[data-hero-video-toggle]');
+      if (!hero || !video || !button || video.dataset.ready) return;
+      video.dataset.ready = 'true';
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+      if (reduceMotion || saveData) return; // poster frame only
+
+      const update = () => {
+        const state = video.ended ? 'replay' : video.paused ? 'play' : 'pause';
+        const labels = { pause: 'Pause video', play: 'Play video', replay: 'Replay video' };
+        button.querySelector('[data-label]')!.textContent = labels[state];
+        button.querySelectorAll<SVGElement>('[data-icon]').forEach((icon) => {
+          icon.classList.toggle('hidden', icon.dataset.icon !== state);
+        });
+      };
+
+      const showText = () => {
+        delete hero.dataset.ended;
+        removeEventListener('scroll', showText);
+        removeEventListener('keydown', showText);
+        hero.removeEventListener('pointerdown', showText);
+      };
+      video.addEventListener('ended', () => {
+        update();
+        hero.dataset.ended = 'true';
+        addEventListener('scroll', showText, { passive: true });
+        addEventListener('keydown', showText);
+        hero.addEventListener('pointerdown', showText);
+      });
+      hero.addEventListener('focusin', showText);
+
+      video.addEventListener('play', update);
+      video.addEventListener('pause', update);
+      button.addEventListener('click', () => {
+        if (video.ended) {
+          showText();
+          video.currentTime = 0;
+        }
+        if (video.paused) video.play();
+        else video.pause();
+      });
+
+      video.preload = 'auto';
+      video
+        .play()
+        .then(() => {
+          button.hidden = false;
+          update();
+        })
+        .catch(() => {
+          /* Autoplay refused (e.g. low-power mode): keep the poster frame, no button. */
+        });
+    };
+    document.addEventListener('astro:page-load', setupHeroVideo);
+  </script>
+
+  <!-- 2. About OceanObs, in three short sections. Words in src/config/home.ts. -->
+  <section class="py-16 md:py-24" aria-labelledby="about-oceanobs">
+    <div class="mx-auto max-w-7xl px-4 lg:px-6">
+      <div class="grid gap-8 lg:grid-cols-12">
+        <h2 id="about-oceanobs" class="scroll-mt-28 tracking-tight text-heading lg:col-span-5">
+          <span class="block text-xl font-semibold text-link md:text-2xl"
+            >{HOME.about.titleLead}<span class="sr-only">:</span></span
+          >
+          <span class="mt-2 block text-3xl font-bold md:text-4xl">{HOME.about.titleEmphasis}</span>
+        </h2>
+        <p class="text-lg leading-relaxed text-default md:text-xl lg:col-span-7">{HOME.about.text}</p>
+      </div>
+      <!-- Before / at / after: a connected three-step line (vertical on phones, horizontal from md). -->
+      <div class="relative mt-12 md:mt-16">
+        <div
+          class="absolute top-6 bottom-6 left-6 w-0.5 bg-line md:right-[16.67%] md:bottom-auto md:left-[16.67%] md:h-0.5 md:w-auto"
+          aria-hidden="true"
+        >
+        </div>
+        <ol class="relative grid gap-8 md:grid-cols-3 md:gap-6">
+          {
+            HOME.about.phases.map(({ icon, title, text }, i) => (
+              <li class="relative grid grid-cols-[3rem_1fr] gap-x-5 md:grid-cols-1 md:justify-items-center md:text-center">
+                <span
+                  class:list={[
+                    'flex h-12 w-12 items-center justify-center rounded-full ring-8 ring-white',
+                    i === 1 ? 'bg-primary text-white' : 'bg-mist text-primary',
+                  ]}
+                  aria-hidden="true"
+                >
+                  <Icon name={icon} class="h-6 w-6" />
+                </span>
+                <div class="md:mt-5">
+                  <h3 class="text-xl font-bold text-heading">{title}</h3>
+                  <p class="mt-2 text-default md:max-w-xs">{text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-mist py-16 md:py-24" aria-labelledby="why-observing">
+    <div class="mx-auto max-w-7xl px-4 lg:px-6">
+      <div class="grid gap-8 lg:grid-cols-12">
+        <h2
+          id="why-observing"
+          class="scroll-mt-28 text-3xl font-bold tracking-tight text-heading md:text-4xl lg:col-span-5 lg:pr-8"
+        >
+          {HOME.whyObserving.title}
+        </h2>
+        <p class="font-heading text-xl leading-relaxed text-heading md:text-2xl lg:col-span-7">
+          {HOME.whyObserving.lead}
+        </p>
+      </div>
+      <ul class="mt-10 grid gap-4 md:grid-cols-3">
+        {
+          HOME.whyObserving.reasons.map(({ icon, title, text }) => (
+            <li class="rounded-[4px] border-t-4 border-primary bg-white p-6 md:p-8">
+              <Icon name={icon} class="h-9 w-9 text-primary" aria-hidden="true" />
+              <h3 class="mt-5 text-xl font-bold text-heading">{title}</h3>
+              <p class="mt-3 text-default">{text}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-10 grid gap-6 lg:grid-cols-12">
+        <div class="lg:col-span-7 lg:col-start-6">
+          <p class="text-lg text-default">{HOME.whyObserving.closing}</p>
+          <a href={HOME.whyObserving.link.href} class:list={[linkClass, 'mt-5']}>
+            {HOME.whyObserving.link.text}
+            <Icon name="tabler:arrow-up-right" class="h-4 w-4 shrink-0" aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-ink py-16 md:py-24" aria-labelledby="shape-next-decade">
+    <div class="mx-auto grid max-w-7xl gap-8 px-4 lg:grid-cols-12 lg:px-6">
+      <h2
+        id="shape-next-decade"
+        class="scroll-mt-28 text-3xl font-bold tracking-tight text-white md:text-5xl lg:col-span-5"
+      >
+        {HOME.shape.title}
+      </h2>
+      <div class="lg:col-span-7">
+        <p class="font-heading text-xl leading-relaxed text-on-dark md:text-2xl">{HOME.shape.text}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href={getPermalink(HOME.shape.primary.href)} class="btn-site-accent">
+            {HOME.shape.primary.text}
+            <Icon name="tabler:arrow-right" class="h-4 w-4" aria-hidden="true" />
+          </a>
+          <a href={getPermalink(HOME.shape.secondary.href)} class="btn-site-outline-light"
+            >{HOME.shape.secondary.text}</a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Upcoming Events: shared data with News & Events (src/data/events) -->
+  <section class="py-16 md:py-20" aria-labelledby="updates">
+    <div class="mx-auto max-w-7xl px-4 lg:px-6">
+      <SectionHead
+        id="updates"
+        title={HOME.events.title}
+        link={{ text: HOME.events.link.text, href: getPermalink(HOME.events.link.href) }}
+      />
+      <div class="mt-8">
+        <UpcomingEvents events={upcoming} compact limit={2} />
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,72 @@
+site:
+  name: OceanObs’29
+  site: 'https://www.oceanobs29.net'
+  base: '/'
+  trailingSlash: false
+
+  googleSiteVerificationId: null
+
+# Default SEO metadata
+metadata:
+  title:
+    default: 'OceanObs’29'
+    template: '%s — OceanObs’29'
+  description: 'OceanObs’29 is a decadal forum bringing together the global ocean community to define priorities, strengthen coordination, and ensure ocean observing remains scientifically robust, societally relevant, and fit for the future.'
+  robots:
+    index: true
+    follow: true
+  openGraph:
+    site_name: OceanObs’29
+    images:
+      # Share card made from the hero photo and logo (2026-10-19).
+      - url: '~/assets/images/share-oceanobs29.jpg'
+        width: 1200
+        height: 630
+    type: website
+  twitter:
+    cardType: summary_large_image
+
+i18n:
+  language: en
+  textDirection: ltr
+
+apps:
+  blog:
+    # Off until the first real news post: turning it on publishes /news, its RSS feed and sitemap entries.
+    isEnabled: false
+    postsPerPage: 8
+
+    post:
+      isEnabled: true
+      permalink: '/news/%slug%' # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
+      robots:
+        index: true
+
+    list:
+      isEnabled: true
+      pathname: 'news' # Blog main path, you can change this to "articles" (/articles)
+      robots:
+        index: true
+
+    category:
+      isEnabled: true
+      pathname: 'news/category' # Category main path /category/some-category, you can change this to "group" (/group/some-category)
+      robots:
+        index: true
+
+    tag:
+      isEnabled: false
+      pathname: 'tag' # Tag main path /tag/some-tag, you can change this to "topics" (/topics/some-category)
+      robots:
+        index: false
+
+    isRelatedPostsEnabled: true
+    relatedPostsCount: 4
+
+analytics:
+  vendors:
+    googleAnalytics:
+      id: null # or "G-XXXXXXXXXX"
+
+ui:
+  theme: 'light:only' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"
