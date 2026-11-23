@@ -5,7 +5,8 @@
 import type { ImageMetadata } from 'astro';
 
 import oceanFromIss from '~/assets/images/site/hero-ocean-from-iss.jpg';
-import heroVideoPoster from '~/assets/images/site/hero-video-poster.jpg';
+import heroVideoPoster from '~/assets/images/site/hero-vessel-poster.jpg';
+import deepSeaVehicle from '~/assets/images/site/deep-sea-vehicle.jpg';
 import aguLogo from '~/assets/images/logos/agu26-annual-meeting.png';
 import oceanDecadeLogo from '~/assets/images/logos/ocean-decade-2021-2030.png';
 import workshopCover from '~/assets/images/site/workshop-summary-2026-cover.jpg';
@@ -30,22 +31,27 @@ export interface SiteImage {
 // Not in the registry because it is not shown on any page: the social share card
 // src/assets/images/share-oceanobs29.jpg (set in src/config.yaml, openGraph.images)
 // is derived from the homeHero photo (NASA, public domain) plus the OceanObs’29 logo.
-export const IMAGES: Record<'homeHero', SiteImage> = {
+export const IMAGES: Record<'homeHero' | 'deepSeaVehicle', SiteImage> = {
   /**
    * Basis of the social share card (the homepage hero itself is now HERO_VIDEO below). No longer shown on
    * the Partners page (removed 2026-11-22, website update brief).
    */
   homeHero: {
     src: oceanFromIss,
-    // Decorative backdrop behind the headline, so screen readers skip it (red-team review, 2026-10-19).
-    // Description for reference: the Philippine Sea from the ISS, clouds over a sunlit ocean.
-    alt: '',
+    alt: 'Sunlit ocean and clouds over the Philippine Sea, seen from orbit',
     credit: 'NASA',
     license: 'Public domain',
     sourceUrl: 'https://commons.wikimedia.org/wiki/File:Cloudscape_Over_the_Philippine_Sea.jpg',
     // Original 4928px from Commons, saved at 3200px in sRGB with metadata removed (2026-10-18).
     placeholder: false,
     position: '60% 40%',
+  },
+  deepSeaVehicle: {
+    src: deepSeaVehicle,
+    alt: 'Lights on a deep-sea vehicle illuminate the dark water above the seafloor',
+    credit: 'OceanObs’29 project footage',
+    license: 'Original work by OceanObs’29',
+    placeholder: false,
   },
 };
 
@@ -57,8 +63,7 @@ export const IMAGES: Record<'homeHero', SiteImage> = {
 /**
  * Homepage hero video: an original OceanObs’29 production (no third-party rights), added 2026-11-20.
  * Source: "OceanObs29 Hero_optimized.mp4" (1920×1080 H.264, 35 s, no audio, 8.8 MB, fast-start).
- * The file lives in public/video/ so it is served as-is. The poster is the 29-second frame, shown
- * before the video loads and instead of it for reduced-motion or data-saver visitors.
+ * The file lives in public/video/ and plays on request. The poster shows the research vessel at 21.2 seconds.
  */
 export const HERO_VIDEO = {
   src: '/video/oceanobs29-hero.mp4',

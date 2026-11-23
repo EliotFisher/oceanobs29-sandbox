@@ -13,6 +13,8 @@
 
 export const HOME = {
   hero: {
+    /** Conference location and month confirmed in the website handoff. */
+    locationDate: 'Qingdao, China / October 2029',
     /** Headline in two weights: a lighter lead-in, then the emphasis. [old site] */
     headlineLead: 'Shaping the next decade of',
     headlineEmphasis: 'global ocean observing',
