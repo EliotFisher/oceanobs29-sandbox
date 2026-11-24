@@ -232,7 +232,7 @@
 /* Motion starts only after the shared intersection observer sees an element. */
 @media (prefers-reduced-motion: no-preference) {
   [data-motion-reveal][data-animated]:not(:focus-within) {
-    animation: site-rise-in 580ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+    animation: site-rise-in 950ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
   }
 
   :is(a, button)[class*='btn-site-'] {
@@ -261,8 +261,8 @@
 
 @keyframes site-rise-in {
   from {
-    opacity: 0.4;
-    transform: translateY(16px);
+    opacity: 0.06;
+    transform: translateY(42px);
   }
 
   to {

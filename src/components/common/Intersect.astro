@@ -35,6 +35,7 @@
   ].join(',');
 
   const STAGGER_MS = 60;
+  const REVEAL_STAGGER_MS = 105;
   const STAGGER_MAX_STEPS = 4;
 
   class AwIntersect extends HTMLElement {
@@ -91,9 +92,10 @@
 
           if (visible) {
             if (target.hasAttribute('data-animated')) continue;
+            const stagger = target.hasAttribute('data-motion-reveal') ? REVEAL_STAGGER_MS : STAGGER_MS;
             const delay = target.classList.contains('intersect-no-queue')
               ? 0
-              : Math.min(index++, STAGGER_MAX_STEPS) * STAGGER_MS;
+              : Math.min(index++, STAGGER_MAX_STEPS) * stagger;
             target.removeAttribute('no-intersect');
             target.setAttribute('data-animated', 'true');
             target.style.animationDuration = '';
