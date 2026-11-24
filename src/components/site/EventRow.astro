@@ -84,7 +84,7 @@ const titleHref = compact ? `${getPermalink('/events')}#${eventAnchor(event)}` :
     (logo || (!compact && link)) && (
       <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3 md:mt-0 md:flex-col md:items-end md:justify-between">
         {logo && (
-          <span class="inline-block bg-white" style={`padding: ${logoPadding}px`}>
+          <span class="site-image-motion inline-block bg-white" style={`padding: ${logoPadding}px`}>
             <Image
               src={logo.src}
               alt={logo.alt}

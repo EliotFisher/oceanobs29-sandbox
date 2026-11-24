@@ -6,6 +6,7 @@ import { Icon } from 'astro-icon/components';
 
 import Layout from '~/layouts/PageLayout.astro';
 import PageHeader from '~/components/site/PageHeader.astro';
+import { IMAGES } from '~/config/images';
 import SectionHead from '~/components/site/SectionHead.astro';
 import EventRow from '~/components/site/EventRow.astro';
 import UpcomingEvents from '~/components/site/UpcomingEvents.astro';
@@ -30,6 +31,7 @@ const { upcoming, past } = splitByTime(await getEvents());
 
 <Layout metadata={metadata}>
   <PageHeader
+    image={IMAGES.instruments}
     title="News & Events"
     intro="Upcoming events where you can discuss observing priorities, past OceanObs’29 events, and selected planning updates."
   />

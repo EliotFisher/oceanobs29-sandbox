@@ -10,6 +10,7 @@ import { Icon } from 'astro-icon/components';
 
 import Layout from '~/layouts/PageLayout.astro';
 import PageHeader from '~/components/site/PageHeader.astro';
+import { IMAGES } from '~/config/images';
 import { getPermalink } from '~/utils/permalinks';
 
 const metadata = {
@@ -45,6 +46,7 @@ const pastConferences = [
 
 <Layout metadata={metadata}>
   <PageHeader
+    image={IMAGES.vessel}
     title="The OceanObs’29 conference"
     intro="OceanObs’29 brings together people who collect, share, and use ocean observations to identify gaps and set priorities for the next decade of observing. The conference is planned for Qingdao, China."
   />

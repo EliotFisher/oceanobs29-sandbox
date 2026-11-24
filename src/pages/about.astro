@@ -13,7 +13,7 @@ import SectionHead from '~/components/site/SectionHead.astro';
 import PersonCard from '~/components/site/PersonCard.astro';
 
 import { ORG } from '~/config/org';
-import { EVENT_LOGOS } from '~/config/images';
+import { EVENT_LOGOS, IMAGES } from '~/config/images';
 import { ADVISORY_COMMITTEE, PROGRAM_COMMITTEE, COORDINATION_TEAM } from '~/data/committees';
 
 const metadata = {
@@ -57,6 +57,7 @@ const linkClass = 'font-semibold text-link underline underline-offset-4 hover:no
 
 <Layout metadata={metadata}>
   <PageHeader
+    image={IMAGES.homeHero}
     title="About OceanObs’29"
     intro="OceanObs’29 is part of the international conference series on sustained ocean observing. It brings together people who collect observations and people who use them to review progress and identify priorities for the next decade."
   >
@@ -92,7 +93,11 @@ const linkClass = 'font-semibold text-link underline underline-offset-4 hover:no
         <h2 id="ocean-decade" class="scroll-mt-28 text-3xl font-bold tracking-tight text-heading md:text-4xl">
           OceanObs’29 and the UN Ocean Decade
         </h2>
-        <div class="mt-8 inline-block bg-white" style={`padding: ${decadeLogo.padding}px`}>
+        <div
+          class="site-image-motion intersect intersect-once mt-8 inline-block bg-white"
+          style={`padding: ${decadeLogo.padding}px`}
+          data-motion-reveal
+        >
           <Image
             src={decadeLogo.src}
             alt={decadeLogo.alt}

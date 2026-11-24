@@ -8,6 +8,7 @@ import { Icon } from 'astro-icon/components';
 
 import Layout from '~/layouts/PageLayout.astro';
 import PageHeader from '~/components/site/PageHeader.astro';
+import { IMAGES } from '~/config/images';
 import SectionHead from '~/components/site/SectionHead.astro';
 
 import { ORG } from '~/config/org';
@@ -27,6 +28,7 @@ const linkClass = 'font-semibold text-link underline underline-offset-4 hover:no
 
 <Layout metadata={metadata}>
   <PageHeader
+    image={IMAGES.vesselDeck}
     title="Get involved"
     intro="Help identify where better ocean observations would make a difference. You can contribute before the conference, wherever you are based."
   />

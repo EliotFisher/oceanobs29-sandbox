@@ -8,6 +8,7 @@ import { getCollection } from 'astro:content';
 
 import Layout from '~/layouts/PageLayout.astro';
 import PageHeader from '~/components/site/PageHeader.astro';
+import { IMAGES } from '~/config/images';
 import SectionHead from '~/components/site/SectionHead.astro';
 import NetworkCard from '~/components/site/NetworkCard.astro';
 import PartnershipFinder from '~/components/site/PartnershipFinder.astro';
@@ -37,6 +38,7 @@ const discuss = [
 
 <Layout metadata={metadata}>
   <PageHeader
+    image={IMAGES.deepSeaVehicle}
     title="Partner with OceanObs’29"
     intro="Help bring observing teams, researchers, and data users together to identify the measurements and services communities need. We welcome conversations about funding, technical expertise, and practical support for participation."
   >

@@ -7,6 +7,9 @@ import type { ImageMetadata } from 'astro';
 import oceanFromIss from '~/assets/images/site/hero-ocean-from-iss.jpg';
 import heroVideoPoster from '~/assets/images/site/hero-vessel-poster.jpg';
 import deepSeaVehicle from '~/assets/images/site/deep-sea-vehicle.jpg';
+import observingInstruments from '~/assets/images/site/observing-instruments.jpg';
+import observingVessel from '~/assets/images/site/observing-vessel.jpg';
+import orbit from '~/assets/images/site/hero-video-poster.jpg';
 import aguLogo from '~/assets/images/logos/agu26-annual-meeting.png';
 import oceanDecadeLogo from '~/assets/images/logos/ocean-decade-2021-2030.png';
 import workshopCover from '~/assets/images/site/workshop-summary-2026-cover.jpg';
@@ -31,7 +34,15 @@ export interface SiteImage {
 // Not in the registry because it is not shown on any page: the social share card
 // src/assets/images/share-oceanobs29.jpg (set in src/config.yaml, openGraph.images)
 // is derived from the homeHero photo (NASA, public domain) plus the OceanObs’29 logo.
-export const IMAGES: Record<'homeHero' | 'deepSeaVehicle', SiteImage> = {
+const projectFootage = {
+  credit: 'OceanObs’29 project footage',
+  license: 'Original work by OceanObs’29',
+  placeholder: false,
+};
+
+type SiteImageKey = 'homeHero' | 'deepSeaVehicle' | 'instruments' | 'vessel' | 'vesselDeck' | 'orbit';
+
+export const IMAGES: Record<SiteImageKey, SiteImage> = {
   /**
    * Basis of the social share card (the homepage hero itself is now HERO_VIDEO below). No longer shown on
    * the Partners page (removed 2026-11-22, website update brief).
@@ -49,9 +60,32 @@ export const IMAGES: Record<'homeHero' | 'deepSeaVehicle', SiteImage> = {
   deepSeaVehicle: {
     src: deepSeaVehicle,
     alt: 'Lights on a deep-sea vehicle illuminate the dark water above the seafloor',
-    credit: 'OceanObs’29 project footage',
-    license: 'Original work by OceanObs’29',
-    placeholder: false,
+    ...projectFootage,
+    position: 'center 37%',
+  },
+  instruments: {
+    src: observingInstruments,
+    alt: 'Ocean observing instruments beneath a school of fish',
+    ...projectFootage,
+    position: 'center 65%',
+  },
+  vessel: {
+    src: observingVessel,
+    alt: 'A research vessel with equipment in the water beside it',
+    ...projectFootage,
+    position: 'center 42%',
+  },
+  vesselDeck: {
+    src: heroVideoPoster,
+    alt: 'Crew at work on the deck of a research vessel',
+    ...projectFootage,
+    position: 'center 45%',
+  },
+  orbit: {
+    src: orbit,
+    alt: 'A satellite above Earth’s ocean and cloud cover',
+    ...projectFootage,
+    position: 'center 40%',
   },
 };
 

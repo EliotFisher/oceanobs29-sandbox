@@ -20,7 +20,10 @@ const initials =
     .join('');
 ---
 
-<article class="flex h-full flex-col border-t-2 border-line pt-4">
+<article
+  class="site-image-motion intersect intersect-once flex h-full flex-col border-t-2 border-line pt-4"
+  data-motion-reveal
+>
   {
     person.photo ? (
       <Image

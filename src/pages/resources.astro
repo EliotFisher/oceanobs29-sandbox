@@ -11,7 +11,7 @@ import Layout from '~/layouts/PageLayout.astro';
 import PageHeader from '~/components/site/PageHeader.astro';
 import SectionHead from '~/components/site/SectionHead.astro';
 
-import { WORKSHOP_SUMMARY } from '~/config/images';
+import { WORKSHOP_SUMMARY, IMAGES } from '~/config/images';
 import { getPermalink } from '~/utils/permalinks';
 
 const metadata = {
@@ -59,6 +59,7 @@ const linkClass = 'inline-flex items-center gap-1.5 font-semibold text-link unde
 
 <Layout metadata={metadata}>
   <PageHeader
+    image={IMAGES.orbit}
     title="Publications & Resources"
     intro="Read the summary of the first OceanObs’29 Program Committee workshop, and the community white papers, synthesis, and conference statements from OceanObs’19."
   />
@@ -71,7 +72,13 @@ const linkClass = 'inline-flex items-center gap-1.5 font-semibold text-link unde
     <div class="mx-auto max-w-7xl px-4 lg:px-6">
       <SectionHead id="planning-resources" title="OceanObs’29 planning resources" />
       <article class="mt-8 grid max-w-4xl gap-6 border-t border-line pt-8 sm:grid-cols-[10rem_1fr] sm:gap-8">
-        <a href={getPermalink(WORKSHOP_SUMMARY.href)} class="block self-start" tabindex="-1" aria-hidden="true">
+        <a
+          href={getPermalink(WORKSHOP_SUMMARY.href)}
+          class="site-image-motion intersect intersect-once block self-start"
+          tabindex="-1"
+          aria-hidden="true"
+          data-motion-reveal
+        >
           <Image
             src={WORKSHOP_SUMMARY.cover}
             alt=""

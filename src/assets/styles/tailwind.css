@@ -250,6 +250,14 @@
 }
 
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .site-image-motion img {
+    transition: scale 650ms ease-out;
+  }
+
+  .site-image-motion:hover img {
+    scale: 1.045;
+  }
+
   :is(a, button)[class*='btn-site-']:hover {
     translate: 0 -2px;
   }

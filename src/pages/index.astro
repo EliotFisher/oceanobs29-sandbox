@@ -57,7 +57,7 @@ const structuredData = [
       <h1 id="hero-heading">{HOME.hero.headlineLead} {HOME.hero.headlineEmphasis}</h1>
       <p class="mt-6 max-w-xl text-lg text-on-dark md:text-xl">{HOME.hero.intro}</p>
       <div class="home-actions mt-8 flex flex-wrap gap-3">
-        <a href={getPermalink(HOME.hero.primary.href)} class="btn-site-accent">
+        <a href={getPermalink(HOME.hero.primary.href)} class="btn-site-outline-light home-hero__primary">
           {HOME.hero.primary.text}
           <Icon name="tabler:arrow-up-right" class="size-4" aria-hidden="true" />
         </a>
@@ -137,18 +137,18 @@ const structuredData = [
           <p class="mt-6 max-w-2xl text-lg leading-relaxed text-default">{HOME.about.text}</p>
         </div>
         <figure
-          class="home-image intersect intersect-once relative isolate min-h-[17rem] overflow-hidden bg-ink lg:col-span-6"
+          class="site-image-motion intersect intersect-once relative isolate min-h-[17rem] overflow-hidden bg-ink lg:col-span-6"
           data-motion-reveal
         >
           <Image
-            src={IMAGES.deepSeaVehicle.src}
-            alt={IMAGES.deepSeaVehicle.alt}
+            src={IMAGES.homeHero.src}
+            alt={IMAGES.homeHero.alt}
             layout="none"
             widths={[480, 768, 1100]}
             sizes="(min-width: 64rem) 42vw, 100vw"
             class="absolute inset-0 h-full w-full object-cover"
           />
-          <PhotoCredit image={IMAGES.deepSeaVehicle} />
+          <PhotoCredit image={IMAGES.homeHero} />
         </figure>
       </div>
       <ol class="mt-12 grid gap-7 md:mt-16 md:grid-cols-3 md:gap-9">
@@ -165,18 +165,18 @@ const structuredData = [
   </section>
 
   <figure
-    class="home-image home-satellite intersect intersect-once relative isolate overflow-hidden bg-ink"
+    class="site-image-motion home-satellite intersect intersect-once relative isolate overflow-hidden bg-ink"
     data-motion-reveal
   >
     <Image
-      src={IMAGES.homeHero.src}
-      alt={IMAGES.homeHero.alt}
+      src={IMAGES.orbit.src}
+      alt={IMAGES.orbit.alt}
       layout="none"
       widths={[640, 960, 1440, 1920]}
       sizes="100vw"
       class="absolute inset-0 h-full w-full object-cover"
     />
-    <PhotoCredit image={IMAGES.homeHero} />
+    <PhotoCredit image={IMAGES.orbit} />
   </figure>
 
   <section class="home-paper py-16 md:py-24" aria-labelledby="why-observing">
@@ -284,12 +284,13 @@ const structuredData = [
   .home-hero::before {
     z-index: -1;
     content: '';
-    background: linear-gradient(180deg, rgb(7 26 36 / 20%), rgb(7 26 36 / 73%) 33%, rgb(7 26 36 / 98%));
+    background: linear-gradient(180deg, rgb(7 26 36 / 4%), rgb(7 26 36 / 62%) 40%, rgb(7 26 36 / 82%));
     pointer-events: none;
   }
 
   .home-hero__copy {
     padding-block: clamp(5rem, 12svh, 8rem) 5.5rem;
+    text-shadow: 0 1px 10px rgb(2 11 18 / 85%);
   }
 
   .home-hero h1 {
@@ -312,6 +313,17 @@ const structuredData = [
 
   .home-actions a {
     border-radius: 0.125rem;
+  }
+
+  .home-hero__primary {
+    border-color: #8ce6d7;
+    background-color: rgb(7 26 36 / 52%);
+    text-shadow: none;
+  }
+
+  .home-hero__primary:hover {
+    background-color: #b4f1e6;
+    color: var(--aw-color-ink);
   }
 
   .home-paper {
@@ -346,16 +358,6 @@ const structuredData = [
     display: none;
   }
 
-  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .home-image :global(img) {
-      transition: scale 600ms ease-out;
-    }
-
-    .home-image:hover :global(img) {
-      scale: 1.025;
-    }
-  }
-
   .home-hero__control:hover,
   .home-hero__control:focus-visible {
     border-color: var(--aw-color-accent);
@@ -372,8 +374,9 @@ const structuredData = [
 
     .home-hero::before {
       background:
-        linear-gradient(180deg, rgb(7 26 36 / 20%), transparent 25%, rgb(7 26 36 / 75%)),
-        linear-gradient(90deg, rgb(7 26 36 / 88%), rgb(7 26 36 / 72%) 54%, rgb(7 26 36 / 16%));
+        linear-gradient(180deg, transparent 30%, rgb(7 26 36 / 45%)),
+        linear-gradient(90deg, rgb(7 26 36 / 76%), rgb(7 26 36 / 52%) 67%, rgb(7 26 36 / 5%));
+      mask-image: linear-gradient(180deg, rgb(0 0 0 / 24%), #000 38%);
     }
 
     .home-hero__control {

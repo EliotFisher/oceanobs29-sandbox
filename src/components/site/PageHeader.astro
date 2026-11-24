@@ -18,18 +18,19 @@ const { title, intro, image } = Astro.props;
   {
     image && (
       <>
-        <Image
-          src={image.src}
-          alt={image.alt}
-          layout="none"
-          loading="eager"
-          widths={[768, 1280, 1920]}
-          sizes="100vw"
-          style={image.position ? `object-position: ${image.position}` : undefined}
-          class="absolute inset-0 -z-10 h-full w-full object-cover"
-        />
-        <div class="absolute inset-0 -z-10 bg-ink/80" aria-hidden="true" />
-        <PhotoCredit image={image} />
+        <div class="intersect intersect-once absolute inset-0 -z-10" data-motion-reveal aria-hidden="true">
+          <Image
+            src={image.src}
+            alt=""
+            layout="none"
+            loading="eager"
+            widths={[640, 960, 1440, 1920]}
+            sizes="100vw"
+            style={image.position ? `object-position: ${image.position}` : undefined}
+            class="absolute inset-0 h-full w-full object-cover"
+          />
+        </div>
+        <div class="page-header__shade pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
       </>
     )
   }
@@ -43,4 +44,17 @@ const { title, intro, image } = Astro.props;
     {intro && <p class="mt-6 max-w-2xl text-lg text-on-dark md:text-xl">{intro}</p>}
     <slot />
   </div>
+  {image && <PhotoCredit image={image} />}
 </section>
+
+<style>
+  .page-header__shade {
+    background: linear-gradient(90deg, rgb(7 24 39 / 90%), rgb(7 24 39 / 73%) 72%, rgb(7 24 39 / 45%));
+  }
+
+  @media (width < 64rem) {
+    .page-header__shade {
+      background: rgb(7 24 39 / 77%);
+    }
+  }
+</style>
